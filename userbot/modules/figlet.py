@@ -10,11 +10,9 @@ from userbot import CMD_HELP
 from userbot.events import register
 
 CMD_SET = {
-    "slant": "slant",
     "3D": "3-d",
     "5line": "5lineoblique",
     "alpha": "alphabet",
-    "banner": "banner3-D",
     "doh": "doh",
     "iso": "isometric1",
     "letters": "letters",

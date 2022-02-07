@@ -217,8 +217,9 @@ async def upload_google_photos(event):
                     "Content-Length": str(part_size),
                     "Geez-Goog-Upload-Command": "upload",
                     "Geez-Goog-Upload-Offset": str(offset),
-                    "Authorization": "Bearer " + creds.access_token,
+                    "Authorization": f'Bearer {creds.access_token}',
                 }
+
                 logger.info(i)
                 logger.info(headers)
                 response = await session.post(
@@ -235,7 +236,7 @@ async def upload_google_photos(event):
                 )
                 logger.info(response.headers)
 
-                # await f_d.seek(i * upload_granularity)
+                            # await f_d.seek(i * upload_granularity)
             # await f_d.seek(upload_granularity)
             current_chunk = await f_d.read(upload_granularity)
 
@@ -293,6 +294,6 @@ async def upload_google_photos(event):
 def file_ops(file_path):
     file_size = os.stat(file_path).st_size
     mime_type = guess_type(file_path)[0]
-    mime_type = mime_type if mime_type else "text/plain"
+    mime_type = mime_type or "text/plain"
     file_name = file_path.split("/")[-1]
     return file_name, mime_type, file_size

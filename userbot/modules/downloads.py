@@ -74,7 +74,7 @@ async def download_video(event):
         with YoutubeDL(opts) as rip:
             rip_data = rip.extract_info(url)
     except DownloadError as DE:
-        await event.edit(f"`{str(DE)}`")
+        await event.edit(f'`{DE}`')
         return
     except ContentTooShortError:
         await event.edit("`The download content was too short.`")
@@ -99,7 +99,7 @@ async def download_video(event):
     except ExtractorError:
         return await event.edit("`There was an error during info extraction.`")
     except Exception as e:
-        return await event.edit(f"{str(type(e)): {str(e)}}")
+        return await event.edit(f'{str(type(e)): {e}}')
     dir = os.listdir()
     if f"{rip_data['id']}.mp3.jpg" in dir:
         thumb = f"{rip_data['id']}.mp3.jpg"
@@ -174,7 +174,7 @@ async def download_vsong(event):
         with YoutubeDL(opts) as rip:
             rip_data = rip.extract_info(url)
     except DownloadError as DE:
-        return await x.edit(f"`{str(DE)}`")
+        return await x.edit(f'`{DE}`')
     except ContentTooShortError:
         return await x.edit("`The download content was too short.`")
     except GeoRestrictedError:
@@ -193,15 +193,16 @@ async def download_vsong(event):
     except ExtractorError:
         return await x.edit("`There was an error during info extraction.`")
     except Exception as e:
-        return await x.edit(f"{str(type(e)): {str(e)}}")
+        return await x.edit(f'{str(type(e)): {e}}')
     tail = time.time()
     ttt = await uploader(
-        rip_data["id"] + ".mp4",
+        f'{rip_data["id"]}.mp4',
         rip_data["title"] + ".mp4",
         tail,
         x,
-        "Uploading " + rip_data["title"],
+        f'Uploading {rip_data["title"]}',
     )
+
     CAPT = f"⫸ Song - {rip_data['title']}\n⫸ By - {rip_data['uploader']}\n"
     await event.client.send_file(
         event.chat_id,
@@ -224,9 +225,9 @@ async def original(event):
     dc = random.randrange(1, 3)
     if dc == 1:
         piki = "AIzaSyAyDBsY3WRtB5YPC6aB_w8JAy6ZdXNc6FU"
-    if dc == 2:
+    elif dc == 2:
         piki = "AIzaSyBF0zxLlYlPMp9xwMQqVKCQRq8DgdrLXsg"
-    if dc == 3:
+    elif dc == 3:
         piki = "AIzaSyDdOKnwnPwVIQ_lbH5sYE4FoXjAKIQV0DQ"
     extract_lyrics = sl(f"{piki}", "15b9fb6193efd5d90")
     sh1vm = extract_lyrics.get_lyrics(f"{geez}")

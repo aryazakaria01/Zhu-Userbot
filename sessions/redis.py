@@ -89,7 +89,7 @@ class RedisSession(MemorySession):
     def _get_sessions(self, strip_prefix=False):
         key_pattern = "{}:auth".format(self.sess_prefix)
         try:
-            sessions = self.redis_connection.keys(key_pattern + '*')
+            sessions = self.redis_connection.keys(f'{key_pattern}*')
             return [
                 s.decode().replace(key_pattern, '')
                 if strip_prefix else s.decode() for s in sessions
@@ -128,8 +128,7 @@ class RedisSession(MemorySession):
             return
 
         key_pattern = "{}:auth".format(self.sess_prefix)
-        s = self.redis_connection.hgetall(key_pattern)
-        if s:
+        if s := self.redis_connection.hgetall(key_pattern):
             auth_key = s.get(b'auth_key') or auth_key
             self._auth_key = AuthKey(s.get(auth_key))
 
@@ -166,7 +165,7 @@ class RedisSession(MemorySession):
     def _get_entities(self, strip_prefix=False):
         key_pattern = "{}:entities:".format(self.sess_prefix)
         try:
-            entities = self.redis_connection.keys(key_pattern + "*")
+            entities = self.redis_connection.keys(f'{key_pattern}*')
             if not strip_prefix:
                 return entities
             return [s.decode().replace(key_pattern, "") for s in entities]
@@ -292,8 +291,7 @@ class RedisSession(MemorySession):
 
     def get_file(self, md5_digest, file_size, cls):
         key = "{}:sent_files:{}".format(self.sess_prefix, md5_digest)
-        s = self.redis_connection.hgetall(key)
-        if s:
+        if s := self.redis_connection.hgetall(key):
             try:
                 if (
                     s.get(b'md5_digest').decode() == md5_digest and

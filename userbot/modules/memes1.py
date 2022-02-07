@@ -491,14 +491,14 @@ async def phcomment(event):
         if reply:
             user = await get_user_from_event(event)
             if user.last_name:
-                name = user.first_name + " " + user.last_name
+                name = f'{user.first_name} {user.last_name}'
             else:
                 name = user.first_name
-            text = text if text else str(reply.message)
+            text = text or str(reply.message)
         elif text:
             user = await bot.get_me()
             if user.last_name:
-                name = user.first_name + " " + user.last_name
+                name = f'{user.first_name} ' + user.last_name
             else:
                 name = user.first_name
             text = text
