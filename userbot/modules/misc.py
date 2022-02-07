@@ -108,7 +108,7 @@ async def repeat(rep):
 
     replyText = toBeRepeated + "\n"
 
-    for i in range(0, replyCount - 1):
+    for _ in range(replyCount - 1):
         replyText += toBeRepeated + "\n"
 
     await rep.edit(replyText)
@@ -118,8 +118,7 @@ async def repeat(rep):
 async def repo_is_here(wannasee):
     """For .repo command, just returns the repo URL."""
     await wannasee.edit(
-        f"**REPOSITORY**\n"
-        f"💞 **[[[R̸E̸P̸O̸​](https://github.com/Kenzuuu/LLove-Userbot)]]** 💞 **[[[O̸W̸N̸E̸R̸](t.me/triplenineee)]]** 💞\n"
+        '**REPOSITORY**\n💞 **[[[R̸E̸P̸O̸\u200b](https://github.com/Kenzuuu/LLove-Userbot)]]** 💞 **[[[O̸W̸N̸E̸R̸](t.me/triplenineee)]]** 💞\n'
     )
 
 
@@ -196,7 +195,7 @@ async def okgoogle(img):
             return
 
         os.remove(name)
-        match = await ParseSauce(fetchUrl + "&preferences?hl=en&fg=1#languages")
+        match = await ParseSauce(f'{fetchUrl}&preferences?hl=en&fg=1#languages')
         guess = match["best_guess"]
         imgspage = match["similar_images"]
 
@@ -206,10 +205,7 @@ async def okgoogle(img):
             await img.edit("`Couldn't find anything for your uglyass.`")
             return
 
-        if img.pattern_match.group(1):
-            lim = img.pattern_match.group(1)
-        else:
-            lim = 3
+        lim = img.pattern_match.group(1) or 3
         images = await scam(match, lim)
         yeet = []
         for i in images:
@@ -263,7 +259,7 @@ async def scam(results, lim):
 
     for imglink in oboi:
         counter += 1
-        if not counter >= int(lim):
+        if counter < int(lim):
             imglinks.append(imglink)
         else:
             break

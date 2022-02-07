@@ -16,6 +16,7 @@
 
 """- ProjectBish Google Drive managers -"""
 
+
 import asyncio
 import base64
 import io
@@ -85,17 +86,9 @@ if __ is not None:
                     G_DRIVE_FOLDER_ID = __.split("folderview?id=")[1]
                 except IndexError:
                     if "http://" not in __ or "https://" not in __:
-                        if any(map(str.isdigit, __)):
-                            _1 = True
-                        else:
-                            _1 = False
-                        if "-" in __ or "_" in __:
-                            _2 = True
-                        else:
-                            _2 = False
-                        if True in [_1 or _2]:
-                            pass
-                        else:
+                        _1 = any(map(str.isdigit, __))
+                        _2 = "-" in __ or "_" in __
+                        if True not in [_1 or _2]:
                             LOGS.info("G_DRIVE_FOLDER_ID " "not a valid ID...")
                             G_DRIVE_FOLDER_ID = None
                     else:
@@ -309,7 +302,7 @@ async def download(gdrive, service, uri=None):
             global parent_Id
             folder = await create_dir(service, file_name)
             parent_Id = folder.get("id")
-            webViewURL = "https://drive.google.com/drive/folders/" + parent_Id
+            webViewURL = f'https://drive.google.com/drive/folders/{parent_Id}'
             try:
                 await task_directory(gdrive, service, required_file_name)
             except CancelProcess:
@@ -331,9 +324,7 @@ async def download(gdrive, service, uri=None):
                 return reply
     except Exception as e:
         status = status.replace("DOWNLOAD]", "ERROR]")
-        reply += (f"`{status}`\n\n"
-                  "`Status` : **failed**\n"
-                  f"`Reason` : `{str(e)}`\n\n")
+        reply += f'`{status}`\n\n`Status` : **failed**\n`Reason` : `{e}`\n\n'
         return reply
     return
 

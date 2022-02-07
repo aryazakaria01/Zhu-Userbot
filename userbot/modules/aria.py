@@ -153,21 +153,30 @@ async def show_all(event):
     msg = ""
     for download in downloads:
         msg = (
-            msg
-            + "File: `"
-            + str(download.name)
-            + "`\nSpeed: "
-            + str(download.download_speed_string())
-            + "\nProgress: "
-            + str(download.progress_string())
-            + "\nTotal Size: "
-            + str(download.total_length_string())
-            + "\nStatus: "
-            + str(download.status)
-            + "\nETA:  "
+            (
+                (
+                    (
+                        (
+                            (
+                                (f'{msg}File: `' + str(download.name))
+                                + "`\nSpeed: "
+                            )
+                            + str(download.download_speed_string())
+                            + "\nProgress: "
+                        )
+                        + str(download.progress_string())
+                        + "\nTotal Size: "
+                    )
+                    + str(download.total_length_string())
+                    + "\nStatus: "
+                )
+                + str(download.status)
+                + "\nETA:  "
+            )
             + str(download.eta_string())
             + "\n\n"
         )
+
     if len(msg) <= 4096:
         await event.edit("`On-going Downloads: `\n" + msg)
         await sleep(5)
@@ -192,7 +201,7 @@ async def show_all(event):
 async def check_metadata(gid):
     file = aria2.get_download(gid)
     new_gid = file.followed_by_ids[0]
-    LOGS.info("Changing GID " + gid + " to" + new_gid)
+    LOGS.info(f'Changing GID {gid} to{new_gid}')
     return new_gid
 
 
@@ -205,20 +214,14 @@ async def check_progress_for_dl(gid, event, previous):
             if not (complete or file.error_message):
                 percentage = int(file.progress)
                 downloaded = percentage * int(file.total_length) / 100
-                prog_str = "[{0}{1}] `{2}`".format(
-                    "".join(
-                        "█" for i in range(
+                prog_str = "[{0}{1}] `{2}`".format("".join("█" for _ in range(
                             math.floor(
                                 percentage /
-                                10))),
-                    "".join(
-                        "░" for i in range(
+                                10))), "".join("░" for _ in range(
                             10 -
                             math.floor(
                                 percentage /
-                                10))),
-                    file.progress_string(),
-                )
+                                10))), file.progress_string())
                 msg = (
                     f"{file.name} - Downloading\n"
                     f"{prog_str}\n"
@@ -233,8 +236,7 @@ async def check_progress_for_dl(gid, event, previous):
             await sleep(5)
             await check_progress_for_dl(gid, event, previous)
             file = aria2.get_download(gid)
-            complete = file.is_complete
-            if complete:
+            if complete := file.is_complete:
                 return await event.edit(
                     f"`Name`: `{file.name}`\n"
                     f"`Size`: `{file.total_length_string()}`\n"

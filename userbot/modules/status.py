@@ -17,7 +17,6 @@ PROFILE_IMAGE = os.environ.get(
 
 
 @register(outgoing=True, pattern="^.offline(?: |$)(.*)")
-# pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
@@ -32,8 +31,7 @@ async def _(event):
     urllib.request.urlretrieve(
         "https://telegra.ph/file/249f27d5b52a87babcb3f.jpg", "donottouch.jpg"
     )
-    photo = "donottouch.jpg"
-    if photo:
+    if photo := "donottouch.jpg":
         file = await event.client.upload_file(photo)
         try:
             await bot(functions.photos.UploadProfilePhotoRequest(file))
@@ -73,8 +71,7 @@ async def _(event):
     if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):  # pylint:disable=E0602
         os.makedirs(TEMP_DOWNLOAD_DIRECTORY)  # pylint:disable=E0602
     urllib.request.urlretrieve(PROFILE_IMAGE, "donottouch.jpg")
-    photo = "donottouch.jpg"
-    if photo:
+    if photo := "donottouch.jpg":
         file = await event.client.upload_file(photo)
         try:
             await bot(functions.photos.UploadProfilePhotoRequest(file))

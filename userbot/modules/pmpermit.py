@@ -5,6 +5,7 @@
 
 """Userbot module for keeping control who PM you."""
 
+
 from sqlalchemy.exc import IntegrityError
 from telethon.tl.functions.contacts import BlockRequest, UnblockRequest
 from telethon.tl.functions.messages import ReportSpamRequest
@@ -26,11 +27,7 @@ from userbot import (
 )
 from userbot.events import register
 
-if PMPERMIT_PIC is None:
-    CUSTOM_PIC = ALIVE_LOGO
-else:
-    CUSTOM_PIC = str(PMPERMIT_PIC)
-
+CUSTOM_PIC = ALIVE_LOGO if PMPERMIT_PIC is None else str(PMPERMIT_PIC)
 COUNT_PM = {}
 LASTMSG = {}
 
@@ -43,13 +40,7 @@ CUSTOM_TEXT = (
     if PMPERMIT_TEXT
     else f"__Halo kawan, saya bot yang menjaga room chat Love-Userbot {DEFAULTUSER} di mohon jangan melakukan spam , kalau anda melakukan itu OTOMATIS saya akan memblockir anda!__ \n"
 )
-DEF_UNAPPROVED_MSG = (
-    f"💘 L̷O̷V̷E̷ S̷E̷C̷U̷R̷I̷T̷Y̷ 💘\n\n"
-    f"⛔ NO SPAM THIS CHAT ⛔\n"
-    f"DIMOHON UNTUK TIDAK NYEPAM\n"
-    f"TUNGGU PESAN ANDA DIBALAS\n\n"
-    f"**[💘LOVE - USERBOT💘]** "
-)
+DEF_UNAPPROVED_MSG = '💘 L̷O̷V̷E̷ S̷E̷C̷U̷R̷I̷T̷Y̷ 💘\n\n⛔ NO SPAM THIS CHAT ⛔\nDIMOHON UNTUK TIDAK NYEPAM\nTUNGGU PESAN ANDA DIBALAS\n\n**[💘LOVE - USERBOT💘]** '
 # =================================================================
 
 
@@ -76,11 +67,7 @@ async def permitpm(event):
 
         # Use user custom unapproved message
         getmsg = gvarstatus("unapproved_msg")
-        if getmsg is not None:
-            UNAPPROVED_MSG = getmsg
-        else:
-            UNAPPROVED_MSG = DEF_UNAPPROVED_MSG
-
+        UNAPPROVED_MSG = getmsg if getmsg is not None else DEF_UNAPPROVED_MSG
         # This part basically is a sanity check
         # If the message that sent before is Unapproved Message
         # then stop sending it again to prevent FloodHit
@@ -107,9 +94,9 @@ async def permitpm(event):
 
             if COUNT_PM[event.chat_id] > PM_LIMIT:
                 await event.respond(
-                    "`Dibilangin jangan spam goblok gw Blokir juga lu anjeng, makanya jangan spam`\n"
-                    f"`Ke majikan saya blok`"
+                    '`Dibilangin jangan spam goblok gw Blokir juga lu anjeng, makanya jangan spam`\n`Ke majikan saya blok`'
                 )
+
 
                 try:
                     del COUNT_PM[event.chat_id]
@@ -130,12 +117,16 @@ async def permitpm(event):
                     name0 = str(name.first_name)
                     await event.client.send_message(
                         BOTLOG_CHATID,
-                        "["
-                        + name0
-                        + "](tg://user?id="
-                        + str(event.chat_id)
-                        + ")"
-                        + " Telah Diblokir Karna Melakukan Spam Ke Room Chat",
+                        (
+                            (
+                                (
+                                    f'[{name0}](tg://user?id='
+                                    + str(event.chat_id)
+                                )
+                                + ")"
+                            )
+                            + " Telah Diblokir Karna Melakukan Spam Ke Room Chat"
+                        ),
                     )
 
 
@@ -159,11 +150,7 @@ async def auto_accept(event):
 
         # Use user custom unapproved message
         get_message = gvarstatus("unapproved_msg")
-        if get_message is not None:
-            UNAPPROVED_MSG = get_message
-        else:
-            UNAPPROVED_MSG = DEF_UNAPPROVED_MSG
-
+        UNAPPROVED_MSG = get_message if get_message is not None else DEF_UNAPPROVED_MSG
         chat = await event.get_chat()
         if isinstance(chat, User):
             if is_approved(event.chat_id) or chat.bot:
@@ -238,11 +225,7 @@ async def approvepm(apprvpm):
 
     # Get user custom msg
     getmsg = gvarstatus("unapproved_msg")
-    if getmsg is not None:
-        UNAPPROVED_MSG = getmsg
-    else:
-        UNAPPROVED_MSG = DEF_UNAPPROVED_MSG
-
+    UNAPPROVED_MSG = getmsg if getmsg is not None else DEF_UNAPPROVED_MSG
     async for message in apprvpm.client.iter_messages(
         apprvpm.chat_id, from_user="me", search=UNAPPROVED_MSG
     ):
@@ -308,7 +291,7 @@ async def blockpm(block):
     else:
         await block.client(BlockRequest(block.chat_id))
         aname = await block.client.get_entity(block.chat_id)
-        await block.edit(f"`LU JAMET, MAAF GUA BLOCK YA KONTOLL`")
+        await block.edit('`LU JAMET, MAAF GUA BLOCK YA KONTOLL`')
         name0 = str(aname.first_name)
         uid = block.chat_id
 
@@ -370,15 +353,14 @@ async def add_pmsg(cust_msg):
             sql.delgvar("unapproved_msg")
             status = "Pesan"
 
-        if message:
-            # TODO: allow user to have a custom text formatting
-            # eg: bold, underline, striketrough, link
-            # for now all text are in monoscape
-            msg = message.message  # get the plain text
-            sql.addgvar("unapproved_msg", msg)
-        else:
+        if not message:
             return await cust_msg.edit("`Mohon Balas Ke Pesan`")
 
+        # TODO: allow user to have a custom text formatting
+        # eg: bold, underline, striketrough, link
+        # for now all text are in monoscape
+        msg = message.message  # get the plain text
+        sql.addgvar("unapproved_msg", msg)
         await cust_msg.edit("`Pesan Berhasil Disimpan Ke Room Chat`")
 
         if BOTLOG:
@@ -415,14 +397,13 @@ async def permitpm(event):
     if event.fwd_from:
         return
     chats = await event.get_chat()
-    if event.is_private:
-        if not pm_permit_sql.is_approved(chats.id):
-            pm_permit_sql.approve(
-                chats.id, f"`{ALIVE_NAME} Telah Mengirimi Anda Pesan 😯`"
-            )
-            await borg.send_message(
-                chats, f"**Menerima Pesan!, Pengguna Terdeteksi Adalah {DEFAULTUSER}**"
-            )
+    if event.is_private and not pm_permit_sql.is_approved(chats.id):
+        pm_permit_sql.approve(
+            chats.id, f"`{ALIVE_NAME} Telah Mengirimi Anda Pesan 😯`"
+        )
+        await borg.send_message(
+            chats, f"**Menerima Pesan!, Pengguna Terdeteksi Adalah {DEFAULTUSER}**"
+        )
 
 
 CMD_HELP.update(

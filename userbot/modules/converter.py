@@ -41,7 +41,6 @@ async def convert(event):
         new_required_file_name = ""
         new_required_file_caption = ""
         command_to_run = []
-        force_document = False
         voice_note = False
         supports_streaming = False
         if input_str == "voice":
@@ -70,8 +69,9 @@ async def convert(event):
             new_required_file_caption = "AUDIO" + \
                 str(round(time.time())) + ".mp3"
             new_required_file_name = (
-                Config.TMP_DOWNLOAD_DIRECTORY + "/" + new_required_file_caption
+                f'{Config.TMP_DOWNLOAD_DIRECTORY}/{new_required_file_caption}'
             )
+
             command_to_run = [
                 "ffmpeg",
                 "-i",
@@ -100,6 +100,7 @@ async def convert(event):
         os.remove(downloaded_file_name)
         if os.path.exists(new_required_file_name):
             end_two = datetime.now()
+            force_document = False
             await borg.send_file(
                 entity=event.chat_id,
                 file=new_required_file_name,

@@ -1,5 +1,6 @@
 """ Userbot initialization. """
 
+
 import logging
 import os
 import re
@@ -33,10 +34,9 @@ CMD_HELP = {}
 INT_PLUG = ""
 LOAD_PLUG = {}
 
-# Bot Logs setup:
-CONSOLE_LOGGER_VERBOSE = sb(os.environ.get("CONSOLE_LOGGER_VERBOSE", "False"))
-
-if CONSOLE_LOGGER_VERBOSE:
+if CONSOLE_LOGGER_VERBOSE := sb(
+    os.environ.get("CONSOLE_LOGGER_VERBOSE", "False")
+):
     basicConfig(
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         level=DEBUG,
@@ -109,9 +109,7 @@ PMPERMIT_PIC = (
 # Bleep Blop, this is a bot ;)
 PM_AUTO_BAN = sb(os.environ.get("PM_AUTO_BAN", "False"))
 
-# Send .chatid in any group with all your administration bots (added)
-G_BAN_LOGGER_GROUP = os.environ.get("G_BAN_LOGGER_GROUP", "")
-if G_BAN_LOGGER_GROUP:
+if G_BAN_LOGGER_GROUP := os.environ.get("G_BAN_LOGGER_GROUP", ""):
     G_BAN_LOGGER_GROUP = int(G_BAN_LOGGER_GROUP)
 
 # Heroku Credentials for updater.
@@ -270,8 +268,7 @@ TEMP_DOWNLOAD_DIRECTORY = os.environ.get(
 # Google Photos
 G_PHOTOS_CLIENT_ID = os.environ.get("G_PHOTOS_CLIENT_ID", None)
 G_PHOTOS_CLIENT_SECRET = os.environ.get("G_PHOTOS_CLIENT_SECRET", None)
-G_PHOTOS_AUTH_TOKEN_ID = os.environ.get("G_PHOTOS_AUTH_TOKEN_ID", None)
-if G_PHOTOS_AUTH_TOKEN_ID:
+if G_PHOTOS_AUTH_TOKEN_ID := os.environ.get("G_PHOTOS_AUTH_TOKEN_ID", None):
     G_PHOTOS_AUTH_TOKEN_ID = int(G_PHOTOS_AUTH_TOKEN_ID)
 
 # Genius Lyrics  API
@@ -539,11 +536,7 @@ with bot:
                     f"**PONG!!**\n `{ms}ms`",
                 )
 
-        @ tgbot.on(
-            events.callbackquery.CallbackQuery(  # pylint:disable=E0602
-                data=re.compile(f"open_plugin")
-            )
-        )
+        @tgbot.on(events.callbackquery.CallbackQuery(data=re.compile('open_plugin')))
         async def on_plug_in_callback_query_handler(event):
             if event.query.user_id == uid:
                 buttons = paginate_help(0, dugmeler, "helpme")
@@ -555,7 +548,8 @@ with bot:
                     link_preview=False,
                 )
             else:
-                reply_pop_up_alert = f"❌ WARNINGS ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini."
+                reply_pop_up_alert = '❌ WARNINGS ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini.'
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @ tgbot.on(
@@ -579,11 +573,8 @@ with bot:
         )
         async def on_plug_in_callback_query_handler(event):
             if event.query.user_id == uid:
-                text = (
-                    f"❁ __Saya Adalah Love Userbot Yang Digunakan Banyak User Telegram__.\n\n"
-                    f"❁ __Saya Dibuat Hanya Untuk Bersenang Senang Ditelegram__.\n\n"
-                    f"❁ __Kelebihan Saya Banyak, Saya Mempunyai 180 Modules__.\n\n"
-                    f"© @Kenzusupport")
+                text = '❁ __Saya Adalah Love Userbot Yang Digunakan Banyak User Telegram__.\n\n❁ __Saya Dibuat Hanya Untuk Bersenang Senang Ditelegram__.\n\n❁ __Kelebihan Saya Banyak, Saya Mempunyai 180 Modules__.\n\n© @Kenzusupport'
+
                 await event.edit(
                     text,
                     file=roselogo,
@@ -618,7 +609,8 @@ with bot:
                     ],
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = '❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini'
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @ tgbot.on(
@@ -641,7 +633,8 @@ with bot:
                     ],
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = '❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini'
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @ tgbot.on(
@@ -651,16 +644,8 @@ with bot:
         )
         async def on_plug_in_callback_query_handler(event):
             if event.query.user_id == uid:
-                text = (
-                    f"Modules Name **Alive**\n\n"
-                    f"× `.alive` × `.zhualive` × `.zhuon`\n"
-                    f"°__Menampilkan Alive Punya Kamu__.\n\n"
-                    f"× `.set var ALIVE_LOGO` [**LINK**]\n"
-                    f"°__Mengubah Foto Alive Kamu, Yang Kamu Inginkan__.\n\n"
-                    f"× `.set var LOVE_TEKS_KUSTOM` [**TEKS**]\n"
-                    f"°__Mengganti Teks Yang Ada Command zhualive__.\n\n"
-                    f"© @Kenzusupport"
-                )
+                text = 'Modules Name **Alive**\n\n× `.alive` × `.zhualive` × `.zhuon`\n°__Menampilkan Alive Punya Kamu__.\n\n× `.set var ALIVE_LOGO` [**LINK**]\n°__Mengubah Foto Alive Kamu, Yang Kamu Inginkan__.\n\n× `.set var LOVE_TEKS_KUSTOM` [**TEKS**]\n°__Mengganti Teks Yang Ada Command zhualive__.\n\n© @Kenzusupport'
+
                 await event.edit(
                     text,
                     file=roselogo,
@@ -673,7 +658,8 @@ with bot:
                     ],
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = '❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini'
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @ tgbot.on(
@@ -683,13 +669,8 @@ with bot:
         )
         async def on_plug_in_callback_query_handler(event):
             if event.query.user_id == uid:
-                text = (
-                    f"Modules Name **pmpermit**\n\n"
-                    f"× `.set var PM_AUTO_BAN True`\n"
-                    f"°__Mengaktifkan Pmpermit Kalian Atau Disebut Pesan Otomatis__.\n\n"
-                    f"× `.set pm_msg` [**REPLYCHAT**]\n"
-                    f"°__Mengganti Teks Pmpermit Selera Kamu__.\n\n"
-                    f"© @Kenzusupport")
+                text = 'Modules Name **pmpermit**\n\n× `.set var PM_AUTO_BAN True`\n°__Mengaktifkan Pmpermit Kalian Atau Disebut Pesan Otomatis__.\n\n× `.set pm_msg` [**REPLYCHAT**]\n°__Mengganti Teks Pmpermit Selera Kamu__.\n\n© @Kenzusupport'
+
                 await event.edit(
                     text,
                     file=roselogo,
@@ -702,7 +683,8 @@ with bot:
                     ],
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = '❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini'
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @ tgbot.on(
@@ -712,13 +694,8 @@ with bot:
         )
         async def on_plug_in_callback_query_handler(event):
             if event.query.user_id == uid:
-                text = (
-                    f"Modules Name **inline**\n\n"
-                    f"× `.set var EMOJI_HELP` [**EMOJI**]\n"
-                    f"°__Mengubah Emoji Inline Yang Ada Dicomand__ `.helpme`\n\n"
-                    f"× `.set var INLINE_PIC` [**LINK**]\n"
-                    f"°__Mengubah Foto Yang Ada Dicomand__ `.helpme`\n\n"
-                    f"© @kenzusupport")
+                text = 'Modules Name **inline**\n\n× `.set var EMOJI_HELP` [**EMOJI**]\n°__Mengubah Emoji Inline Yang Ada Dicomand__ `.helpme`\n\n× `.set var INLINE_PIC` [**LINK**]\n°__Mengubah Foto Yang Ada Dicomand__ `.helpme`\n\n© @kenzusupport'
+
                 await event.edit(
                     text,
                     file=roselogo,
@@ -731,7 +708,8 @@ with bot:
                     ],
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = '❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini'
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @ tgbot.on(
@@ -741,11 +719,8 @@ with bot:
         )
         async def on_plug_in_callback_query_handler(event):
             if event.query.user_id == uid:
-                text = (
-                    f"Modules Name **pmbot**\n\n"
-                    f"× `.set var START_WELCOME` [**TEKS**] \n"
-                    f"°__Kamu Juga Bisa Mengubah Start Welcome Untuk Bot Kamu Yang Ini, Dengan Cara Diatas Dan Kata Kata Bebas__.\n\n"
-                    f"© @Kenzusupport")
+                text = 'Modules Name **pmbot**\n\n× `.set var START_WELCOME` [**TEKS**] \n°__Kamu Juga Bisa Mengubah Start Welcome Untuk Bot Kamu Yang Ini, Dengan Cara Diatas Dan Kata Kata Bebas__.\n\n© @Kenzusupport'
+
                 await event.edit(
                     text,
                     file=roselogo,
@@ -758,7 +733,8 @@ with bot:
                     ],
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = '❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini'
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @ tgbot.on(
@@ -768,13 +744,8 @@ with bot:
         )
         async def on_plug_in_callback_query_handler(event):
             if event.query.user_id == uid:
-                text = (
-                    f"Modules Name **Pembaruan**\n\n"
-                    f"× **Pembaruan Data Untuk L̸O̸V̸E̸-̸U̸S̸E̸R̸B̸O̸T̸  ​, Command Untuk Pembaruan**.\n"
-                    f"⚒Pembaruan Data :\n"
-                    f"`.update deploy`\n"
-                    f"`update`\n\n"
-                    f"© @Kenzusupport")
+                text = 'Modules Name **Pembaruan**\n\n× **Pembaruan Data Untuk L̸O̸V̸E̸-̸U̸S̸E̸R̸B̸O̸T̸  \u200b, Command Untuk Pembaruan**.\n⚒Pembaruan Data :\n`.update deploy`\n`update`\n\n© @Kenzusupport'
+
                 await event.edit(
                     text,
                     file=roselogo,
@@ -787,7 +758,8 @@ with bot:
                     ],
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = '❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini'
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @ tgbot.on(
@@ -847,7 +819,8 @@ with bot:
                     ],
                 )
             else:
-                reply_pop_up_alert = f"❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini"
+                reply_pop_up_alert = '❌ DISCLAIMER ❌\n\nAnda Tidak Mempunyai Hak Untuk Menekan Tombol Button Ini'
+
                 await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
         @ tgbot.on(
@@ -857,7 +830,7 @@ with bot:
         )
         async def killdabot(event):
             if event.query.user_id == uid:
-                text = f"**Zhu-userbot sedang direstart**..."
+                text = '**Zhu-userbot sedang direstart**...'
                 await event.edit(
                     text,
                     file=roselogo,
@@ -874,7 +847,7 @@ with bot:
         )
         async def on_plug_in_callback_query_handler(event):
             if event.query.user_id == uid:
-                text = f"Closed Menu!"
+                text = 'Closed Menu!'
                 await event.edit(
                     text,
                     file=roselogo,
@@ -975,7 +948,7 @@ with bot:
             buttons = [
                 (custom.Button.inline("Open Menu", data="open_plugin"),),
             ]
-            await event.edit(f"Menu Ditutup! ", buttons=buttons)
+            await event.edit('Menu Ditutup! ', buttons=buttons)
 
         @ tgbot.on(
             events.callbackquery.CallbackQuery(  # pylint:disable=E0602
@@ -1009,12 +982,13 @@ with bot:
                 cmdhel = str(CMD_HELP[modul_name])
                 if len(cmdhel) > 180:
                     help_string = (
-                        str(CMD_HELP[modul_name]).replace("`", "")[:180]
-                        + "..."
-                        + "\n\nBaca Text Berikutnya Ketik .help "
+                        (
+                            f'{str(CMD_HELP[modul_name]).replace("`", "")[:180]}...'
+                            + "\n\nBaca Text Berikutnya Ketik .help "
+                        )
                         + modul_name
-                        + " "
-                    )
+                    ) + " "
+
                 else:
                     help_string = str(CMD_HELP[modul_name]).replace("`", "")
 

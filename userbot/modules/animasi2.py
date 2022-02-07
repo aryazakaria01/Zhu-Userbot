@@ -828,7 +828,7 @@ async def kek(keks):
     uio = ["/", "\\"]
     for i in range(1, 15):
         time.sleep(0.3)
-        await keks.edit(":" + uio[i % 2])
+        await keks.edit(f':{uio[i % 2]}')
 
 
 @register(outgoing=True, pattern=r"^\.coinflip (.*)")
@@ -878,14 +878,12 @@ async def who(event):
 async def slap(replied_user, event):
     user_id = replied_user.id
     first_name = replied_user.first_name
-    username = replied_user.username
-
-    if username:
+    if username := replied_user.username:
         slapped = "@{}".format(username)
     else:
         slapped = f"[{first_name}](tg://user?id={user_id})"
     slap_str = event.pattern_match.group(1)
-    if slap_str == "en" or slap_str != "id" and slap_str != "jutsu":
+    if slap_str == "en" or slap_str not in ["id", "jutsu"]:
         temp = choice(SLAP_TEMPLATES_EN)
         item = choice(ITEMS_EN)
         hit = choice(HIT_EN)
@@ -912,14 +910,14 @@ async def slap(replied_user, event):
 async def llol(lel):
     okay = "-_-"
     for _ in range(10):
-        okay = okay[:-1] + "_-"
+        okay = f'{okay[:-1]}_-'
         await lel.edit(okay)
 
 
 @register(outgoing=True, pattern=r"^\.(yes|no|maybe|decide)$")
 async def decide(event):
     decision = event.pattern_match.group(1).lower()
-    message_id = event.reply_to_msg_id if event.reply_to_msg_id else None
+    message_id = event.reply_to_msg_id or None
     if decision != "decide":
         r = requests.get(f"https://yesno.wtf/api?force={decision}").json()
     else:
@@ -934,7 +932,7 @@ async def decide(event):
 async def fun(e):
     t = ";_;"
     for _ in range(10):
-        t = t[:-1] + "_;"
+        t = f'{t[:-1]}_;'
         await e.edit(t)
 
 
@@ -1148,7 +1146,7 @@ async def metoo(hahayes):
 async def Oof(e):
     t = "Oof"
     for _ in range(15):
-        t = t[:-1] + "of"
+        t = f'{t[:-1]}of'
         await e.edit(t)
 
 
@@ -1297,8 +1295,7 @@ async def payf(event):
 @register(outgoing=True, pattern=r"^\.lfy (.*)")
 async def let_me_google_that_for_you(lmgtfy_q):
     textx = await lmgtfy_q.get_reply_message()
-    qry = lmgtfy_q.pattern_match.group(1)
-    if qry:
+    if qry := lmgtfy_q.pattern_match.group(1):
         query = str(qry)
     elif textx:
         query = textx
@@ -1370,7 +1367,7 @@ async def typewriter(typew):
     await sleep(sleep_time)
     for character in message:
         old_text = old_text + "" + character
-        typing_text = old_text + "" + typing_symbol
+        typing_text = f'{old_text}{typing_symbol}'
         await typew.edit(typing_text)
         await sleep(sleep_time)
         await typew.edit(old_text)

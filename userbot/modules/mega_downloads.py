@@ -90,7 +90,7 @@ async def mega_downloader(megadl):
     file_url = data["url"]
     hex_key = data["hex_key"]
     hex_raw_key = data["hex_raw_key"]
-    temp_file_name = file_name + ".temp"
+    temp_file_name = f'{file_name}.temp'
     temp_file_path = TEMP_DOWNLOAD_DIRECTORY + temp_file_name
     file_path = TEMP_DOWNLOAD_DIRECTORY + file_name
     if os.path.isfile(file_path):
@@ -99,29 +99,30 @@ async def mega_downloader(megadl):
                 errno.EEXIST, os.strerror(
                     errno.EEXIST), file_path)
         except FileExistsError as e:
-            await megadl.edit(f"`{str(e)}`")
+            await megadl.edit(f'`{e}`')
             return None
     downloader = SmartDL(file_url, temp_file_path, progress_bar=False)
     display_message = None
     try:
         downloader.start(blocking=False)
     except HTTPError as e:
-        await megadl.edit(f"**HTTPError**: `{str(e)}`")
+        await megadl.edit(f'**HTTPError**: `{e}`')
         return None
     start = time.time()
     while not downloader.isFinished():
         status = downloader.get_status().capitalize()
-        total_length = downloader.filesize if downloader.filesize else None
+        total_length = downloader.filesize or None
         downloaded = downloader.get_dl_size()
         percentage = int(downloader.get_progress() * 100)
         speed = downloader.get_speed(human=True)
         estimated_total_time = round(downloader.get_eta())
         progress_str = "`{0}` | [{1}{2}] `{3}%`".format(
             status,
-            "".join(["█" for i in range(math.floor(percentage / 10))]),
-            "".join(["░" for i in range(10 - math.floor(percentage / 10))]),
+            "".join(["█" for _ in range(math.floor(percentage / 10))]),
+            "".join(["░" for _ in range(10 - math.floor(percentage / 10))]),
             round(percentage, 2),
         )
+
         diff = time.time() - start
         try:
             current_message = (
@@ -156,7 +157,7 @@ async def mega_downloader(megadl):
             P.start()
             P.join()
         except FileNotFoundError as e:
-            await megadl.edit(f"`{str(e)}`")
+            await megadl.edit(f'`{e}`')
             return None
         else:
             await megadl.edit(

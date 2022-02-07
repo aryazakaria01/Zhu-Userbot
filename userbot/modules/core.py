@@ -35,8 +35,8 @@ def load_module(shortname):
         mod.logger = logging.getLogger(shortname)
         spec.loader.exec_module(mod)
         # for imports
-        sys.modules["userbot.modules." + shortname] = mod
-        LOGS.info("Successfully imported " + shortname)
+        sys.modules[f'userbot.modules.{shortname}'] = mod
+        LOGS.info(f'Successfully imported {shortname}')
 
 
 @register(outgoing=True, pattern=r"^\.install$")
